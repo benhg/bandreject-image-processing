@@ -30,7 +30,7 @@ import math
 # draw the circle
 for angle in range(0, 3600, 1):
     angle = angle/10
-    for r in range(1100,1300):
+    for r in range(1200,1350):
         r = r/10
         x = r * math.sin(math.radians(angle)) + 0
         y = r * math.cos(math.radians(angle)) + 0
