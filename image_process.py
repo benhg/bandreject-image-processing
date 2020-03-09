@@ -12,6 +12,26 @@ print(im.shape, im1.shape)
 for i in range(im.shape[0]):
     for j in range(im.shape[1]):
         im1[i+PAD_WIDTH,j+PAD_WIDTH] = im[i,j]
+
+# Linear ramp-down on top
+for i, val in enumerate(np.linspace(0, 1/2, PAD_WIDTH)):
+    for j in range(im1.shape[1]):
+        im1 [i,j] = val
+# Linear ramp-down on bottom
+for i, val in enumerate(np.linspace(1/2, 0, PAD_WIDTH)):
+    for j in range(im1.shape[1]):
+        im1 [i+im.shape[0]+ PAD_WIDTH, j] = val
+# Linear ramp-down on left
+for i, val in enumerate(np.linspace(0, 1/2, PAD_WIDTH)):
+    for j in range(im.shape[0]):
+        im1 [j+PAD_WIDTH, i] = val
+# Linear ramp-down on right
+for i, val in enumerate(np.linspace(1/2, 0, PAD_WIDTH)):
+    for j in range(im.shape[0]):
+        im1 [j+PAD_WIDTH, i+im.shape[1]+PAD_WIDTH] = val
+
+
+
  
 # the LPF kernel
 kernel = [[1]*im1.shape[1]]*im1.shape[0]
