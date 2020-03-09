@@ -14,21 +14,29 @@ for i in range(im.shape[0]):
         im1[i+PAD_WIDTH,j+PAD_WIDTH] = im[i,j]
 
 # Linear ramp-down on top
-for i, val in enumerate(np.linspace(0, 1/2, PAD_WIDTH)):
-    for j in range(im1.shape[1]):
-        im1 [i,j] = val
+for j in range(im.shape[1]):
+    eventual_brightness = im [0][j]
+    for i, val in enumerate(np.linspace(0, eventual_brightness, PAD_WIDTH)):
+        im1 [i,j+PAD_WIDTH] = val
+        eventual_brightness = im[j][i]
 # Linear ramp-down on bottom
-for i, val in enumerate(np.linspace(1/2, 0, PAD_WIDTH)):
-    for j in range(im1.shape[1]):
-        im1 [i+im.shape[0]+ PAD_WIDTH, j] = val
+for j in range(im.shape[1]):
+    eventual_brightness = im [im.shape[0]-1][j]
+    for i, val in enumerate(np.linspace(eventual_brightness, 0, PAD_WIDTH)):
+        im1 [i+im.shape[0]+ PAD_WIDTH, j+PAD_WIDTH] = val
+        eventual_brightness = im[j][i]
 # Linear ramp-down on left
-for i, val in enumerate(np.linspace(0, 1/2, PAD_WIDTH)):
-    for j in range(im.shape[0]):
+for j in range(im.shape[0]):
+    eventual_brightness = im [j][0]
+    for i, val in enumerate(np.linspace(0, eventual_brightness, PAD_WIDTH)):
         im1 [j+PAD_WIDTH, i] = val
+        eventual_brightness = im[j][i]
 # Linear ramp-down on right
-for i, val in enumerate(np.linspace(1/2, 0, PAD_WIDTH)):
-    for j in range(im.shape[0]):
+for j in range(im.shape[0]):
+    eventual_brightness = im [j][im.shape[1]-1]
+    for i, val in enumerate(np.linspace(eventual_brightness, 0, PAD_WIDTH)):
         im1 [j+PAD_WIDTH, i+im.shape[1]+PAD_WIDTH] = val
+        eventual_brightness = im[j][i]
 
 
 
@@ -54,6 +62,15 @@ for angle in range(0, 3600, 1):
         x = r * math.sin(math.radians(angle)) + 0
         y = r * math.cos(math.radians(angle)) + 0
         freq_kernel[int(round(y))][int(round(x))] = 0j
+# Add a square in the circle:
+for t in range(0, 25, 1):
+    for j in range(-120, 100, 1):
+        freq_kernel [t-120][j] = 0j
+        freq_kernel [t+100][j] = 0j
+for t in range(0, 25, 1):
+    for j in range(-120, 100, 1):
+        freq_kernel [j][t-120] = 0j
+        freq_kernel [j][t+100] = 0j
 
 
 # Monkey with the image by convolution
